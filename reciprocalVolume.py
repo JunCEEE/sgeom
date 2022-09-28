@@ -38,7 +38,8 @@ emc_geom.load_data_dir(data_dir)
 emc_geom.set_lambda(2.5)
 
 mesh_length = emc_geom.reciprocal_shape[0]
-max_q = emc_geom.q_max_volume * 2 * np.pi * 1e10
+max_q = emc_geom.q_max_volume * 1e10
+# max_q = emc_geom.q_max_volume * 2 * np.pi * 1e10
 
 # # Calculate the 3D diffraction volume
 
@@ -49,10 +50,13 @@ volume = pg.calculate_diffraction_pattern_gpu(mesh,
                                               particle,
                                               return_type='intensity')
 
-print(voxel_length * 1e-10 / 2 / np.pi)
-print(mesh.max() * 1e-10 / 2 / np.pi)
+print(voxel_length * 1e-10)
+print(mesh.max() * 1e-10)
+# print(voxel_length * 1e-10 / 2 / np.pi)
+# print(mesh.max() * 1e-10 / 2 / np.pi)
 print(mesh.max() / voxel_length)
 
 with h5.File('reciprocal_volume.h5', 'w') as f:
     f.create_dataset('volume', volume.shape, data=volume)
-    f.create_dataset('q_map', mesh.shape, data=mesh * 1e-10 / 2 / np.pi)
+    # f.create_dataset('q_map', mesh.shape, data=mesh * 1e-10 / 2 / np.pi)
+    f.create_dataset('q_map', mesh.shape, data=mesh * 1e-10)
