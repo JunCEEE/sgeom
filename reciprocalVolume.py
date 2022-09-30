@@ -15,9 +15,11 @@ import skopi.geometry as pgeom
 particle = sk.Particle()
 # particle.read_pdb('./4V7V.pdb', ff='WK')
 
+pdb_file = "./2nip.pdb"
 H5_FILE = '/gpfs/exfel/data/user/juncheng/hydratedProject/data/simulation/w0_link/pmi_out_0000001.h5'
 datasetname = '/data/snp_' + '{0:07}'.format(1)
-particle.read_h5file(H5_FILE, datasetname)
+# particle.read_h5file(H5_FILE, datasetname)
+particle.read_pdb(pdb_file)
 
 # Load beam
 # beam = ps.Beam(photon_energy=4960, fluence=1.58e12, focus_radius=1.13e-7)
@@ -59,4 +61,4 @@ print(mesh.max() / voxel_length)
 with h5.File('reciprocal_volume.h5', 'w') as f:
     f.create_dataset('volume', volume.shape, data=volume)
     # f.create_dataset('q_map', mesh.shape, data=mesh * 1e-10 / 2 / np.pi)
-    f.create_dataset('q_map', mesh.shape, data=mesh * 1e-10)
+    f.create_dataset('q_map', mesh.shape, data=mesh)
