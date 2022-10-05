@@ -64,6 +64,15 @@ class GeometryConverter:
 
         self.wavelength = wavelength
 
+    def all_pixels(self) -> ArrayLike[np.int_]:
+        """
+        Generates a 2d ndarray containing the coordinates of all pixels.
+        :return: An ndarray representing all pixels, shape (pixels_across, pixels_up, 2).
+        """
+        return np.moveaxis(
+            np.meshgrid(np.arange(self.pixels[0]), np.arange(self.pixels[1])), 0, -1
+        )
+
     def generate_basis_vectors(self, X1, X2, X3, rot) -> None:
         """
         Generates the vectors needed for conversions between systems.
@@ -100,7 +109,7 @@ class GeometryConverter:
         """
         Converts an array of detector pixels to lab system coordinates.
 
-        :param detector_pixels: ndarray of detector pixels, shape (-1, 2).
+        :param detector_pixels: ndarray of detector pixels to convert, shape (-1, 2).
         :return: ndarray of coordinates in lab system, shape (-1, 3).
         """
         pixels = np.reshape(detector_pixels, (-1, 2))
